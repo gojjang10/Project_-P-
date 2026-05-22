@@ -10,10 +10,23 @@ public class OfflineRewardService : MonoBehaviour
     [SerializeField] private long goldPerHour = 100;
     [SerializeField] private double maxOfflineHours = 24;
 
-    private void OnEnable()
+    private void Start()
     {
+        // Start는 모든 스크립트의 Awake가 끝난 뒤에 실행되므로 Instance가 존재
         if (DataManager.Instance != null)
-            DataManager.Instance.OnUserDataLoaded += OnUserDataLoaded;
+        {
+            // 만약 내가 구독하기 전에 이미 데이터 로드가 빛의 속도로 끝났다면?
+            if (DataManager.Instance.IsReady)
+            {
+                // 바로 보상 계산 실행
+                CheckAndApply(DataManager.Instance.UserData);
+            }
+            else
+            {
+                // 아직 로드 중이라면 로드 완료 이벤트에 구독
+                DataManager.Instance.OnUserDataLoaded += OnUserDataLoaded;
+            }
+        }
     }
 
     private void OnDisable()

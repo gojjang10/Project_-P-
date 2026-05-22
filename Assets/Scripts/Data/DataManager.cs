@@ -218,6 +218,12 @@ public class DataManager : MonoBehaviour
         SaveGold();
     }
 
+    // 버튼 클릭용 테스트 메서드 (int는 인스펙터에 보입니다!)
+    public void AddGoldFromButton(int amount)
+    {
+        AddGold((long)amount);
+    }
+
     public void SaveStage()
     {
         if (!CanSave()) return;
